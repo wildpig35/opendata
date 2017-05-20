@@ -3,6 +3,7 @@
 
 2.管理したいフォルダへ移動
 git init
+
 git add .
 git commit -m "change contents"
 
@@ -13,5 +14,6 @@ git push origin master
 
 3.内容をコピー(クローン)
 git clone http://github.com/wildpig35/opendata
+
 
 
