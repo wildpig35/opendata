@@ -1,4 +1,7 @@
-1.管理したいフォルダへ移動
+1.リモートリポジトリを作る
+　githubログイン→NewRepository→管理したいフォルダ名
+
+2.管理したいフォルダへ移動
 git init
 git add .
 git commit -m "change contents"
@@ -8,7 +11,7 @@ git push origin master
 
 .gitignore に無視したいファイル名をワイルドカードで指定
 
-2.内容をコピー(クローン)
+3.内容をコピー(クローン)
 git clone http://github.com/wildpig35/opendata
 
 
