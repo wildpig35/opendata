@@ -1,0 +1,14 @@
+1.管理したいフォルダへ移動
+git init
+git add .
+git commit -m "change contents"
+
+git remote add origin http://github.com/wildpig35/opendata.git
+git push origin master
+
+.gitignore に無視したいファイル名をワイルドカードで指定
+
+2.内容をコピー(クローン)
+git clone http://github.com/wildpig35/opendata
+
+
