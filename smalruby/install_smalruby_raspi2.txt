@@ -1,0 +1,159 @@
+「RaspberryPi　2」にSmalrubyインストール
+
+※RasbperryPi B＋では、H27.10現在インストールが完了できません。章末をご覧ください。
+　また、下記の記事のRaspbianはWheezyです。
+
+※RaspberryPi3では、JessieでH28.5現在Smalrubyがインストール出来ました！別ドキュメントを参考にして下さい。
+
+・NOOBSをSDカードにインストール
+・Raspbianをインストール
+※この時、画面下の言語は「日本語」、Keyboardを「jp」にしてインストールしています。
+
+※起動時のraspi-configはESCか、TAB?2でFinishを選択してキャンセル
+
+$startx
+・LXTerminalを起動して、
+$sudo raspi-config
+
+3 Enable Boot to Desktop/Scratch
+　　Desktop Log in as user ‘pi’ at the graphical desktop　でTAB×2回　Enter
+
+4 Internationalisaion Option
+　　I1 Change Locale
+　　　→　ja_JP.UTF-8　でTAB×2回　Enter
+　　　　　デフォルトロケールも　ja_JP.UTF-8 にする
+
+　　I2 Change Timezone
+　　　→　アジア　で　TAB　Enter
+　　　→　Tokyo　で　TAB　Enter　（東京はとても下にある）
+
+　　I3 Change Keyboard Layout
+　　　→　標準105 で  TAB
+　　　　　　レイアウトで 日本語 TAB
+　　　　　　AltGrとして機能させるキーで キーボード配置のデフォルト TAB
+　　　　　　コンポーズキーで なし TAB
+　　　　　　Ctl+Alt+BackSpaceで いいえ Enter
+
+※ここで、 7 Overclock  の Medium　にすると、インストールが速くなるかも？！　
+
+メインメニューに戻り、TAB×2回(Finish)
+　Would you like to reboot now?　で　はい　Enter
+
+デスクトップが起動したら、LXTerminalを起動
+
+$ sudo apt-get update
+$ sudo apt-get -y upgrade
+
+☆rbenv（ruby）のインストール　…Smalrubyを動作させるため、Ruby2.0以上をインストールする
+
+$ sudo apt-get -y install rbenv ruby-build openssl libssl-dev libreadline-dev
+
+
+$ git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+$ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+$ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+
+$ sudo shutdown -r now
+→ここでRaspberryPiを再起動
+
+LXTerminalを起動して、
+$ rbenv rehash
+$ git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+
+
+
+☆インストール可能なRubyのバージョンを調べる
+$ rbenv install --list
+
+☆Smalrubyが動作可能な安定バージョンを選択
+$ rbenv install 2.2.2
+→本家・高尾さんによると、2.1.2もOK （2.0以上。2.0.0-p353もＯＫ）
+　※このRubyインストールにB+で2時間超かかる…（RaspberryPi2でも30分以上かかる）
+
+☆インストールされたバージョンの確認
+$ rbenv versions　
+* system (set by /home/pi/.rbenv/version)
+  2.2.2
+
+$ rbenv global 2.2.2
+→インストールしたバージョンを指定すること。
+
+$ gem install rubygems-update rbenv-rehash bundler
+
+
+$ sudo shutdown -r now
+→ここでRasberryPiを再起動
+
+LXTerminalを起動して、
+$ update_rubygems
+$ gem update
+→(H27.9現在で、2.0.0-p353ではrakeとrdocの上書きは「N」を選択。2.2.2ではプロンプトが出ない)
+
+
+$ rbenv rehash
+☆dxruby_sdlのインストール
+
+$ sudo apt-get -y install libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev timidity  libsdl-ttf2.0-dev libsdl-sge-dev fonts-horai-umefont fonts-ipafont scim-anthy
+$ gem install dxruby_sdl
+
+☆smalrubyのインストール
+$ gem install smalruby  smalruby-editor
+→rubyインストール以上の時間(B+で4時間程度、RaspberryPi2で3時間)がかかる
+   （ここまで　計6時間近くかかる事となる）
+
+☆起動してみる
+$ smalruby-editor
+※日本語入力(scim-anthy)は、再起動後に使用できます。
+
+
+☆ディスプレイオフの解除
+→設定にもたつくとスクリーンセーバーのプレビュー表示処理が重いらしくRaspberryPiが反応しなくなるらしいので、素早く設定！
+$ sudo apt-get -y install xscreensaver
+→LXDEメニュー-設定-スクリーンセーバー
+　起動後、素早く「モード：セーバーを無効にする」に変更する
+
+☆さらに稼働速度を上げるためにクロックアップ可能だが、RaspberryPiの寿命が短くなる？
+$ sudo raspi-config
+ 7 Overclock
+　　→Medium で安定稼働。寿命は如何ほどか…？
+
+☆chromiumのインストール
+$ sudo apt-get -y install chromium chromium-browser-l10n
+※デフォルトのブラウザをchromiumに変更(H27.3現在)
+　→LXDEメニュー-設定-既定のアプリケーション　でブラウザにchromiumを設定。
+※新しいRaspbianでChromiumをデフォルトにする(H27.9現在)
+$ sudo update-alternatives --config x-www-browser
+
+  選択肢    パス                     優先度  状態
+------------------------------------------------------------
+  0            /usr/bin/epiphany-browser   85        自動モード
+* 1            /usr/bin/chromium           40        手動モード
+  2            /usr/bin/epiphany-browser   85        手動モード
+
+※現在の選択 [*] を保持するには Enter、さもなければ選択肢の番号のキーを押してください: 1 
+→ ここで/usr/bin/chromiumに対応する番号を入力してEnter。上記の例では「1」です。
+
+
+※RaspberryPi B+へのSmalrubyインストールについて(H27.10現在。RaspbianはWheezy)
+　この資料を作成した当初（H27.3頃)には、Ruby2.0.0-p353及び2.1.2をインストールすることにより、smlaruby-editorをRaspberryPi B+にインストール出来ることを確認しておりました。
+　H27.10現在、ご指摘によりRaspberryPi B+にて再インストールを試みたところ、Ruby2.0.0-p353及び2.0.0-451、2.1.2、2.2.2、2.2.3のいずれのバージョンをインストールしてもsmalruby-editorのインストール時にエラーで停止します。（最後にインストールする「smalruby-editor」のみエラー停止します。）
+　raspi-update、apt-get update & upgrade を行っても状況は変わりません。
+　なお、そのマイクロSDカードをRaspberryPi2に差し込んでsmalruby-editorの再インストールを行うと、すんなりとインストールが完了します。
+
+また、RaspberryPi 2 とB+どちらでも、Ruby2.0.0-p353及び2.0.0-451をインストール後にgem update を行うと、以下の様なエラーが出力されます。(2.1.2以降はエラーが出力されません)
+
+unable to convert "\xC0" from ASCII-8BIT to UTF-8 for /home/pi/.rbenv/versions/2.0.0-p353/lib/ruby/gems/2.0.0/extensions/armv7l-linux/2.0.0-static/json-1.8.3/json/ext/generator.so, skipping…
+
+また、上記のRubyバージョン(2.0.0-p～)では、rdoc及びrakeの上書き確認が出ます。
+私は N を入力しています。2.1.2以降では上書き確認が出ません。
+
+しかし、RaspberryPi2 なら、エラーを無視してsmalruby-editorのインストールを行うことが出来、さらに特に問題なく smalruby-editor を起動&動作させることが出来ます。
+
+※動作確認しているRubyバージョン（RaspberryPi B+又は2にて確認）
+2.0.0-p353
+2.0.0-p451
+2.1.2
+2.1.7
+2.2.2
+2.2.3
+
