@@ -21,5 +21,3 @@ git push origin master
 4.内容をコピー(クローン)
 git clone http://github.com/wildpig35/opendata
 
-
-
