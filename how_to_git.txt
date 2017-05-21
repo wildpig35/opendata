@@ -22,3 +22,6 @@ git push origin master
 git clone https://github.com/wildpig35/opendata
 git clone git://github.com/wildpig35/opendata
 
+5.クローン後にさらに更新を取得
+git pull origin master
+
