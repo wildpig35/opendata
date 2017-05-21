@@ -19,6 +19,6 @@ git push origin master
 .gitignore に無視したいファイル名をワイルドカードで指定
 
 4.内容をコピー(クローン)
-git clone http://github.com/wildpig35/opendata
+git clone https://github.com/wildpig35/opendata
 git clone git://github.com/wildpig35/opendata
 
