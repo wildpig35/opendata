@@ -1,0 +1,84 @@
+「RaspberryPi　3」にSmalrubyインストール
+
+※NOOBS v1.9.0 Jessie+RaspberryPi3で、H28.5現在Smalrubyをインストール成功しましたので、記録します。
+
+・NOOBS v1.9.0をSDカードにインストール
+・Raspbianをインストール
+※この時、画面下の言語は「日本語」、Keyboardを「jp」にしてインストールしています。
+
+※再起動で、GUIで起動します。
+
+・LXTerminalを起動して、
+$sudo raspi-config
+
+5 Internationalisaion Option
+　　I1 Change Locale
+　　　→　ja_JP.UTF-8　でスペース、TAB(了解)　Enter
+　　　　　(en_GB.UTF-8 も残しています)
+　　　　　デフォルトロケールも　ja_JP.UTF-8 にする
+
+　　I2 Change Timezone
+　　　→　アジア　で　TAB　Enter
+　　　→　Tokyo　で　TAB　Enter　（東京はとても下にある）
+
+　　I3 Change Keyboard Layout
+　　　→　標準105 で  TAB
+　　　　　　レイアウトで 日本語 TAB
+　　　　　　AltGrとして機能させるキーで キーボード配置のデフォルト TAB
+　　　　　　コンポーズキーで なし TAB
+　　　　　　Ctl+Alt+BackSpaceで いいえ Enter
+
+メインメニューに戻り、TAB×2回(Finish)
+　Would you like to reboot now?　で　はい　Enter
+
+デスクトップが起動したら、LXTerminalを起動
+
+$ sudo apt-get update
+$ sudo apt-get -y upgrade
+
+☆rubyのバージョンをチェック　…Smalrubyを動作させるためには、Ruby2.0以上が必要
+
+$ ruby -v
+ruby 2.1.5p273 (2014-11-13) [arm-linux-gnueabihf]
+
+$ sudo gem install rubygems-update bundler --no-document
+$ update_rubygems
+$ gem update
+
+
+☆dxruby_sdlのインストール
+
+$ sudo apt-get -y install libsqlite3-dev libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev timidity   libsdl-ttf2.0-dev libsdl-sge-dev fonts-horai-umefont fonts-ipafont scim-anthy 
+$ gem install dxruby_sdl --no-document
+
+☆smalrubyのインストール
+$ gem install smalruby  smalruby-editor --no-document
+→RaspberryPi3で 30分位。(ここまで計2時間近くかかった)
+
+☆起動してみる
+$ smalruby-editor
+※日本語入力(scim-anthy)は、再起動後に使用できます。
+　私は標準ブラウザではブロックを組み合わせることは出来ましたが、ロードが出来なかったため、下記のようにiceweasel(Firefox)をインストールしました。
+
+
+☆iceweaselのインストール
+$ sudo apt-get -y install  iceweasel iceweasel-l10n-ja
+
+※iceweaselをデフォルトにする
+$ sudo update-alternatives --config x-www-browser
+
+ 選択肢    パス                     優先度  状態
+------------------------------------------------------------
+* 0            /usr/bin/epiphany-browser   85        自動モード
+  1            /usr/bin/dillo              50        手動モード
+  2            /usr/bin/epiphany-browser   85        手動モード
+  3            /usr/bin/iceweasel          70        手動モード
+
+
+※現在の選択 [*] を保持するには Enter、さもなければ選択肢の番号のキーを押してください: 3
+→ ここで/usr/bin/iceweasel に対応する番号を入力してEnter。上記の例では「3」です。
+
+☆ディスプレイオフの解除
+$ sudo apt-get -y install xscreensaver
+→メニュー-設定-スクリーンセーバー
+　起動後、素早く「モード：セーバーを無効にする」に変更する

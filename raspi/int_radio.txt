@@ -1,0 +1,50 @@
+RaspberryPiでインターネットラジオ
+
+1.音が出るか確認
+　Scrachで以下のプログラムを作成し、実行する
+
+[旗をクリックされたとき]
+[(ニャー)の音を鳴らす]
+[(1)秒待つ]
+[すべての音を止める]
+[スクリプトを止める]
+
+→HDMIなら、TV等から音が出る
+
+・音量変更
+LXTerminalを起動
+　$ alsamixer
+　→「↑」「↓」で音量変更。大体40位にする。ESCでLXTerminalに戻る
+.bashrc　内に以下のエイリアスを書いておくと(「vol」で起動できて)便利
+　alias vol=’alsamixer’
+
+・音声出力先変更
+アナログ出力(スピーカー接続)にする
+　$ amixer cset numid=3 1
+HDMIにする
+　$ amixer cset numid=3 2
+.bashrc　内に以下のエイリアスを書いておくと便利(スピーカーSPのon/offのつもり)
+ alias spon=’amixer cset numid=3 1’
+ alias spoff=’amixer cset numid=3 2’
+
+アナログ出力に音楽プレイヤー等のイヤホンを挿すと音のチェックが出来る。
+スピーカーから音を出すにはアンプ付きが必要
+
+2.メディアプレイヤーをインストール
+LXTerminalを起動
+ $ sudo apt-get install mplayer
+→エラーが出たら sudo apt-get update して再チャレンジ
+
+3.放送を聞く
+サイマルラジオ http://www.simulradio.info/ でお目当ての放送局の(放送を聞く)スピーカーアイコン上で右クリックし、「リンクアドレスをコピー」でURLを取得してmplayerに渡す。
+
+daraz (鳥取県米子市)
+$ mplayer -playlist http://www.darazfm.com/streaming.asx
+
+みのおFM(大阪府箕面市)
+ $ mplayer -playlist http://fm.minoh.net/minohfm.asx
+
+
+参考
+http://deviceplus.jp/hobby/raspberrypi_entry_013/
+
